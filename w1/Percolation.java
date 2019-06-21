@@ -13,6 +13,8 @@ public class Percolation {
     private WeightedQuickUnionUF block;
     private int len;
     private int numOpen = 0;
+    private int rootIdentifier;
+
 
     public Percolation(int n)
     {
@@ -76,6 +78,10 @@ public class Percolation {
             block.union(calculateIndex(row, col+1), curIdx);
         }
 
+        rootIdentifier = block.find(0);
+
+
+
     }
 
     public boolean isOpen(int row, int col)
@@ -90,7 +96,7 @@ public class Percolation {
     {
         validate(row, col);
         int curIdx = (row-1)* len +col;
-        return block.connected(0, curIdx);
+        return block.find(curIdx) == rootIdentifier;
     }
 
     public int numberOfOpenSites()
@@ -100,30 +106,36 @@ public class Percolation {
 
     public boolean percolates()
     {
-       int rootIdentifier = block.find(0);
-       for (int i = 0; i < len; i++)
-       {
-           if (block.find(len*len - i) == rootIdentifier)
-           {
-               return true;
-           }
-       }
 
-       return false;
+        for (int i = 0; i < len; i++)
+        {
+            if (mat[len*len - i])
+            {
+                if (block.find(len*len - i) == rootIdentifier)
+                {
+                    return true;
+                }
+            }
+
+        }
+
+        return false;
+
+        // return isPercolated;
     }
 
     public static void main(String[] args) {
-        Percolation perc = new Percolation(8);
-        perc.open(1, 6);
-        perc.open(2, 6);
-        perc.open(3, 6);
-        perc.open(4, 6);
-        perc.open(5, 6);
-        perc.open(5, 5);
-        perc.open(4, 4);
-        System.out.println(perc.isFull(5,5));
-        perc.open(5, 4);
-        System.out.println(perc.isFull(4,4));
+        // Percolation perc = new Percolation(8);
+        // perc.open(1, 6);
+        // perc.open(2, 6);
+        // perc.open(3, 6);
+        // perc.open(4, 6);
+        // perc.open(5, 6);
+        // perc.open(5, 5);
+        // perc.open(4, 4);
+        // System.out.println(perc.isFull(5,5));
+        // perc.open(5, 4);
+        // System.out.println(perc.isFull(4,4));
 
         // System.out.println(perc.percolates());
     }

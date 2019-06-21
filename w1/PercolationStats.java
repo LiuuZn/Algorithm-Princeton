@@ -13,8 +13,8 @@ public class PercolationStats {
     private double[] result;
     private int n;
     private int trials;
-    private double mean;
-    private double std;
+    private double m;
+    private double s;
 
     public PercolationStats(int n, int trials)
     {
@@ -47,8 +47,8 @@ public class PercolationStats {
 
             }
 
-            mean = mean();
-            std = stddev();
+            m = mean();
+            s = stddev();
 
         }
     }
@@ -65,17 +65,17 @@ public class PercolationStats {
 
     public double confidenceLo()
     {
-        return mean - calculateGap();
+        return m - calculateGap();
     }
 
     public double confidenceHi()
     {
-        return mean + calculateGap();
+        return m + calculateGap();
     }
 
     private double calculateGap()
     {
-        double gap = 1.96 * this.std / Math.sqrt(this.trials);
+        double gap = 1.96 * this.s / Math.sqrt(this.trials);
         return gap;
     }
 
@@ -83,7 +83,7 @@ public class PercolationStats {
     {
         int numTest = Integer.parseInt(args[0]);
         int timeTest = Integer.parseInt(args[1]);
-        PercolationStats mo = new PercolationStats(numTest, timeTest);
+        new PercolationStats(numTest, timeTest);
         // System.out.printf("mean\t=%f\n", mo.mean);
         // System.out.printf("stddev\t=%f\n", mo.std);
         // System.out.printf("95%% confidence interval\t= [%f, %f]\n", mo.confidenceLo(), mo.confidenceHi());
